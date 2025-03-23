@@ -1,0 +1,78 @@
+#filmTitle{
+    text-align: center;
+}
+
+body{
+    background-image: url("https://images.pexels.com/photos/31043707/pexels-photo-31043707/free-photo-of-majestic-mount-fuji-reflecting-in-calm-lake.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load");
+}
+
+#showingTitle{
+    text-align: left;
+
+}
+#headTitle {
+    font-family: 'Anton', sans-serif; /* Change this to your preferred font */
+    font-size: 2.5rem; /* Adjust size */
+    font-weight: bold; /* Make it stand out */
+    text-transform: uppercase; /* Optional: Makes it all caps */
+    letter-spacing: 2px; /* Optional: Adds spacing between letters */
+}
+#mviedet{
+    list-style: none;
+}
+/* #runtime{
+    background-color: rgb(0, 92, 0);
+} */
+#poster{
+    width: 680px;
+    height: 610px;
+}
+
+.test{
+    margin: 20px;
+    border-radius: 8px;
+}
+
+#headTitle {
+    font-family: 'Zen Dots', cursive;
+}
+#descript{
+    font-family: 'Caveat', cursive;
+}
+#movieDescription{
+    text-align: center;
+}
+#mvie{
+    background-image: url("https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8YmFja2dyb3VuZCUyMGltYWdlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60");
+}
+
+.sinema:hover {
+    cursor: pointer;
+    padding: 20px;
+}
+
+#listCont{
+    background-image: url("https://images.unsplash.com/photo-1506143925201-0252c51780b0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTV8fGJhY2tncm91bmQlMjBkZXNpZ258ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60");
+}
+
+#buyTicket {
+    display: block;
+    width: 150px; /* Adjust button width */
+    height: 40px; /* Adjust button height */
+    font-size: 16px; /* Adjust text size */
+    font-weight: bold;
+    background-color: #ffc107; /* Yellow color */
+    border: none;
+    border-radius: 8px; /* Rounded edges */
+    transition: 0.3s ease-in-out; /* Smooth transition */
+    margin: 20px auto; /* Centers the button horizontally */
+    text-align: center;
+}
+
+#buyTicket:hover {
+    background-color: #ff9800; /* Darker orange on hover */
+    color: white; /* White text on hover */
+    transform: scale(1.05); /* Slightly enlarge */
+    cursor: pointer; /* Change cursor to pointer */
+}
+
