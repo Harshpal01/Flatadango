@@ -1,127 +1,81 @@
-const url = "https://harshpal01.github.io/Flatadango/db.json"
+const url = "http://localhost:3000/films";
 
-document.addEventListener('DOMContentLoaded',()=>{
+document.addEventListener("DOMContentLoaded", () => {
+    // Function to display the first movie details
+    const displayFirstMovie = (films) => {
+        if (!films || films.length === 0) {
+            console.error("No films available!");
+            return;
+        }
+        const firstMovie = films[0];
+        updateMovieDetails(firstMovie);
+    };
 
-    const moviePlaceHolder = ()=>{
-        fetch(url)
-        .then(res =>res.json())
-        .then(content =>{
-            const firstMovie = content.films[0]
+    // Function to update movie details on the page
+    const updateMovieDetails = (movie) => {
+        const filmImg = document.getElementById("poster");
+        const movieTitle = document.getElementById("filmTitle");
+        const movieDescr = document.getElementById("movieDescription");
+        const runningTime = document.getElementById("runtime");
+        const showingTime = document.getElementById("showtime");
+        const availTicket = document.getElementById("ticketsAvailable");
+        const ticketBuy = document.getElementById("buyTicket");
 
-            const filmImg = document.getElementById("poster")
-            const movieTitle = document.getElementById("filmTitle")
-            const movieDescr = document.getElementById("movieDescription")
-            const runningTime = document.getElementById("runtime")
-            const showingTime = document.getElementById("showtime")
-            const availTicket =document.getElementById("ticketsAvailable")
-            filmImg.src = firstMovie.poster
-            movieTitle.innerText = firstMovie.title
-            movieDescr.innerText = firstMovie.description
-            runningTime.innerText =`Runtime: ${firstMovie.runtime} minutes`
-            showingTime.innerText =`Showtime: ${firstMovie.showtime}`
-            availTicket.innerText =`Tickets Available: (${firstMovie.capacity - firstMovie.tickets_sold})`
+        filmImg.src = movie.poster;
+        movieTitle.innerText = movie.title;
+        movieDescr.innerText = movie.description;
+        runningTime.innerText = `Runtime: ${movie.runtime} minutes`;
+        showingTime.innerText = `Showtime: ${movie.showtime}`;
+        let ticketsAvailable = movie.capacity - movie.tickets_sold;
+        updateTicketDisplay(availTicket, ticketsAvailable);
 
+        // Remove previous event listeners before adding a new one
+        ticketBuy.replaceWith(ticketBuy.cloneNode(true));
+        const newTicketBuy = document.getElementById("buyTicket");
 
-            const ticketBuy = document.getElementById("buyTicket")
-            let tickets = Number(firstMovie.capacity - firstMovie.tickets_sold)
-
-            ticketBuy.addEventListener('click',()=>{
-
-                tickets--
-
-                // const ticketRemaining = tickets-1
-
-                if(tickets <= 0){
-                    const frstMovie = document.getElementById("1")
-                    frstMovie.innerHTML=`${firstMovie.title}  <span class="badge bg-danger me-1">SOLD OUT</span>`
-
-                    availTicket.innerHTML = `Ticketd available:  <span class="badge bg-danger">SOLD OUT</span>`
-                }else{
-                    availTicket.innerText = `Tickets available: (${tickets})`
-                }
-            })
-
-        })
-
-
-
-
-    }
-
-    const movieDetails = ()=>{
-        fetch(url)
-        .then(response=>response.json())
-        .then(data=>{
-            const filmData = data.films
-            console.log(filmData)
-            for(let i = 0; i < filmData.length; i++){
-                let item = filmData[i]
-                console.log(item)
-                const movieList = document.createElement("li")
-                const list = document.getElementById("showingMovie")
-
-                movieList.classList.add("list-group-item", "border", "border-info", "sinema")
-
-                movieList.setAttribute('id',`${item.id}`)
-                // movieList.className = "sinema"
-                movieList.innerText = item.title
-                console.log(item.title)
-
-
-                list.appendChild(movieList)
-
-                movieList.addEventListener('click',()=>{
-                    const filmImage = document.getElementById("poster")
-                    const filmTitle = document.getElementById("filmTitle")
-                    const filmDescr = document.getElementById("movieDescription")
-                    const runTime = document.getElementById("runtime")
-                    const showTime = document.getElementById("showtime")
-                    const availTickets =document.getElementById("ticketsAvailable")
-
-
-                    filmImage.src = item.poster
-                    filmTitle.innerText = item.title
-                    filmDescr.innerText = item.description
-                    runTime.innerHTML =`Runtime:<span>${item.runtime}</span>`
-                    showTime.innerText =`Showtime: ${item.showtime}`
-                    availTickets.innerText =`Tickets available: (${item.capacity - item.tickets_sold})`
-
-                    const ticketsBuy = document.getElementById("buyTicket")
-                    let ticket = Number(item.capacity - item.tickets_sold)
-
-                    ticketsBuy.addEventListener('click',()=>{
-
-                        // const ticketRemain = ticket-1
-                        ticket --
-                        if(ticket <= 0){
-                            movieList.innerHTML =`${item.title} <span class="badge bg-danger">SOLD OUT</span>`
-
-                            availTickets.innerHTML = `Tickets available: <span class="badge bg-danger">SOLD OUT</span>`
-
-                        }else{
-
-                            availTickets.innerText = `Tickets available: (${ticket})`
-                        }
-
-
-                    })
-
-
-
-                })
-
-
+        newTicketBuy.addEventListener("click", () => {
+            if (ticketsAvailable > 0) {
+                ticketsAvailable--;
+                updateTicketDisplay(availTicket, ticketsAvailable);
             }
+        });
+    };
 
+    // Function to update ticket display
+    const updateTicketDisplay = (element, tickets) => {
+        if (tickets <= 0) {
+            element.innerHTML = `<span class='badge bg-danger'>SOLD OUT</span>`;
+        } else {
+            element.innerText = `Tickets available: (${tickets})`;
+        }
+    };
 
+    // Function to fetch movies and populate the list
+    const fetchMovies = () => {
+        fetch(url)
+            .then((response) => response.json())
+            .then((data) => {
+                const films = data.films || data;
+                if (!films || films.length === 0) return;
+                
+                const movieList = document.getElementById("showingMovie");
+                movieList.innerHTML = "";
+                films.forEach((movie) => {
+                    const movieItem = document.createElement("li");
+                    movieItem.classList.add("list-group-item", "border", "border-info", "sinema");
+                    movieItem.setAttribute("id", movie.id);
+                    movieItem.innerText = movie.title;
+                    movieList.appendChild(movieItem);
 
+                    movieItem.addEventListener("click", () => {
+                        updateMovieDetails(movie);
+                    });
+                });
 
-        })
+                displayFirstMovie(films);
+            })
+            .catch((error) => console.error("Error fetching movies:", error));
+    };
 
-    }
-
-
-    movieDetails()
-    moviePlaceHolder()
-
-})
+    fetchMovies();
+});
